@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('content')
-        @include('todos._form')
+    @include('todos._form')
 @endsection

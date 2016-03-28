@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Tag;
 use App\Todo;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class TodosController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +25,7 @@ class TodosController extends Controller
     public function index()
     {
         return view('todos/index', [
-           'todos' => Todo::all()
+           'todos' => Todo::where('user_id', Auth::user()->id)->get()
         ]);
     }
 
@@ -29,7 +37,9 @@ class TodosController extends Controller
     public function create()
     {
         //
-        return view('todos/create');
+        return view('todos/create', [
+            'tags' => Tag::all()
+        ]);
     }
 
     /**
@@ -40,10 +50,17 @@ class TodosController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'text' => 'min:5|max:200|required',
+            'tags' => 'required'
+        ]);
         //
-        Todo::create($request->all());
+        $r = Auth::user()
+                ->todos()
+                ->create($request->all())
+                ->tags()->saveMany(Tag::whereIn(['id' => $request->input('tags', [])]));
 
-        redirect(route('todos.index'));
+        return redirect(route('todos.index'));
     }
 
     /**
@@ -66,6 +83,10 @@ class TodosController extends Controller
     public function edit($id)
     {
         //
+        return view('todos.edit', [
+            'model' => Todo::findOrFail($id),
+            'tags' => Tag::all()
+        ]);
     }
 
     /**
@@ -78,6 +99,13 @@ class TodosController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $todo = Todo::findOrFail($id);
+
+        $todo->update($request->all());
+        $todo->tags()->detach();
+        $todo->tags()->saveMany(Tag::whereIn('id', $request->input('tags'))->get());
+
+        return back();
     }
 
     /**

@@ -48,6 +48,9 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">Home</a></li>
+                    @if (!Auth::guest())
+                        <li><a href="{{ route('todos.index') }}">Todos</a></li>
+                    @endif
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -71,8 +74,11 @@
             </div>
         </div>
     </nav>
+    <div class="container">
 
-    @yield('content')
+        @yield('content')
+
+    </div>
 
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

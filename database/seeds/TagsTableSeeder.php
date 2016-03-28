@@ -33,21 +33,21 @@ class TagsTableSeeder extends Seeder
 
         \Illuminate\Support\Facades\DB::table('tag_todo')->insert([
             'tag_id' => 1,
-            'todo_id' => 1,
+            'todo_id' =>4,
         ]);
         
         \Illuminate\Support\Facades\DB::table('tag_todo')->insert([
             'tag_id' => 4,
-            'todo_id' => 1,
+            'todo_id' =>4,
         ]);
         
         \Illuminate\Support\Facades\DB::table('tag_todo')->insert([
             'tag_id' => 1,
-            'todo_id' => 2,
+            'todo_id' =>5,
         ]);
         \Illuminate\Support\Facades\DB::table('tag_todo')->insert([
             'tag_id' => 4,
-            'todo_id' => 2,
+            'todo_id' =>5,
         ]);
     }
 }
