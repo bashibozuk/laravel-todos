@@ -45,6 +45,36 @@ Route::group(['middleware' => ['web'], 'prefix' => 'demo'], function () {
         return view('demo/form', ['data' => $formData]);
     });
 
+    Route::group(['namespace' => 'Test'], function() {
+        Route::get('/crud', function() {
+
+
+            $todo = new \App\Todo();
+            $todo->user_id = 1;
+            $todo->text = 'Reminder';
+            $todo->save();
+            echo 'Selected todo with id ' . $todo->id, PHP_EOL;
+
+
+            $todo = \App\Todo::find($todo->id);
+
+
+            var_dump('Todo text is :' . $todo->text);
+            var_dump('Todo id is :' . $todo->id );
+            $todo->text = 'Reminder revised';
+            $todo->save();
+            echo 'Saving one todo', PHP_EOL;
+            echo 'Selected todo with id ' . $todo->id, PHP_EOL;
+            $todo = \App\Todo::find($todo->id);
+
+            //  $todo->delete();
+            echo 'No more todo ' , PHP_EOL;
+
+            var_dump(\App\Todo::find(1));
+        });
+    });
+
+
 });
 
 Route::group(['middleware' => 'web'], function () {
@@ -55,4 +85,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['namespace' => 'Test'], function() {
        Route::get('test/test', 'IndexController@index');
     });
+
+    Route::get('todos', 'TodosController@index');
 });

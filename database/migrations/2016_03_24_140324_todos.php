@@ -13,6 +13,17 @@ class Todos extends Migration
     public function up()
     {
         //
+        \Illuminate\Support\Facades\Schema::create('todos', function(Blueprint $table){
+            $table->increments('id');
+            $table->integer('user_id', false, true);
+            $table->string('text', 500);
+            //Adds created_at and updated_at columns.
+            $table->timestamps();
+            $table
+                ->foreign('user_id')
+                ->references('id')
+                ->on('users');
+        });
     }
 
     /**
@@ -23,5 +34,6 @@ class Todos extends Migration
     public function down()
     {
         //
+        \Illuminate\Support\Facades\Schema::drop('todos');
     }
 }
