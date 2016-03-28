@@ -23,6 +23,11 @@ class Todo extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->hasOne(\App\User::class, 'id', 'user_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(\App\Tag::class);
     }
 }

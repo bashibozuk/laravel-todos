@@ -86,5 +86,5 @@ Route::group(['middleware' => 'web'], function () {
        Route::get('test/test', 'IndexController@index');
     });
 
-    Route::get('todos', 'TodosController@index');
+    Route::resource('todos', 'TodosController');
 });
